@@ -51,6 +51,12 @@ function FileUpload() {
       >
         Upload
       </button>
+      {!fileData && (
+        <div className="flex justify-center items-center h-80">
+          <h1 className="text-4xl font-bold underline">Choose an excel file & click upload to view it</h1>
+        </div>
+      )}
+
       {fileData && (
         <div>
           <table className="border-collapse border border-gray-400 mt-4 mx-auto">
@@ -62,7 +68,7 @@ function FileUpload() {
                   </th>
                 ))}
               </tr>
-            </thead> 
+            </thead>
             <tbody>
               {fileData.slice(1).map((rowData, rowIndex) => (
                 <tr key={rowIndex}>
@@ -107,7 +113,7 @@ function FileUpload() {
               Download File
             </button>
           </div>
-        </div> 
+        </div>
       )}
     </div>
   );
