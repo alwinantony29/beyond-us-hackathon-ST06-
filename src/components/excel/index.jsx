@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 
 function FileUpload() {
+  // choosenFile is used when user inputs a file, for uploading purposes
   const [choosenFile, setChoosenFile] = useState(null);
+  // selectedFile is used to display the current file to user in tables,after uploading
   const [selectedFile, setSelectedFile] = useState(null);
-  
-  const [fileData, setFileData] = useState(null);
-  // const [fileData, setFileData] = useState(null);
+  const [fileData1, setFileData1] = useState(null); //1st excel sheet
+  const [fileData2, setFileData2] = useState(null); //2nd excel sheet
   const [editMode, setEditMode] = useState(false);
 
   const handleFileChange = (event) => {
     setChoosenFile(event.target.files[0])
     console.log((event.target.files[0]))
-
   }
 
-  const handleFileUpload = () => {
+  const handleFileUpload = (params) => {
+    console.log(params);
     if (choosenFile) {
       const reader = new FileReader()
       reader.onload = (e) => {
@@ -25,24 +26,30 @@ function FileUpload() {
         const worksheet = workbook.Sheets[worksheetName];
         const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         console.log(data);
-        setFileData(data);
+        setSelectedFile(data);
+        if(params===1)  setFileData1(data);
+        else setFileData2(data)
       }
       reader.readAsBinaryString(choosenFile);
     }
   };
 
   const handleCellChange = (rowIndex, columnIndex, value) => {
-    const updatedData = [...fileData];
+    const updatedData = [...selectedFile];
     updatedData[rowIndex][columnIndex] = value;
-    setFileData(updatedData);
+    setSelectedFile(updatedData);
   };
 
   const handleToggleEditMode = () => {
     setEditMode(!editMode);
   };
+  const handleCreate=()=>{
+    console.log("create");
+    
+  }
 
   const handleDownload = () => {
-    const worksheet = XLSX.utils.aoa_to_sheet(fileData);
+    const worksheet = XLSX.utils.aoa_to_sheet(selectedFile);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     XLSX.writeFile(workbook, 'uploaded_file.xlsx');
@@ -56,7 +63,7 @@ function FileUpload() {
           <input type="file" onChange={handleFileChange} />
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleFileUpload}
+            onClick={()=>handleFileUpload(1)}
           >
             Upload
           </button>
@@ -66,7 +73,7 @@ function FileUpload() {
           <input type="file" onChange={handleFileChange} />
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleFileUpload}
+            onClick={()=>handleFileUpload(2)}
           >
             Upload
           </button>
@@ -75,7 +82,7 @@ function FileUpload() {
         <div className='flex items-center ml-10'>
           <button
             className="bg-blue-500 text-white px-4 py-2  rounded"
-            onClick={handleFileUpload}
+            onClick={handleCreate}
           >
             Create New file
           </button>
@@ -83,18 +90,18 @@ function FileUpload() {
 
       </div>
 
-      {!fileData && (
+      {!selectedFile && (
         <div className="flex justify-center items-center h-80">
           <h1 className="text-4xl font-bold underline">Choose an excel file & click upload to view it</h1>
         </div>
       )}
 
-      {fileData && (
+      {selectedFile && (
         <div>
           <table className="border-collapse border border-gray-400 mt-4 mx-auto">
             <thead>
               <tr>
-                {fileData[0].map((cellData, index) => (
+                {selectedFile[0].map((cellData, index) => (
                   <th key={index} className="border border-gray-400 px-4 py-2">
                     {cellData}
                   </th>
@@ -102,7 +109,7 @@ function FileUpload() {
               </tr>
             </thead>
             <tbody>
-              {fileData.slice(1).map((rowData, rowIndex) => (
+              {selectedFile.slice(1).map((rowData, rowIndex) => (
                 <tr key={rowIndex}>
                   {rowData.map((cellData, cellIndex) => (
                     <td
