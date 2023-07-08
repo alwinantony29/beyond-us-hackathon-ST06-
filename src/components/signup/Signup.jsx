@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Perform data submission or validation logic here
-    console.log('Submitted:', { name, email, password });
+    console.log("Submitted:", { name, email, password });
     // Reset form inputs
-    setName('');
-    setEmail('');
-    setPassword('');
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
@@ -22,7 +22,10 @@ const Signup = () => {
         <h2 className="text-2xl font-semibold mb-6">Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Name
             </label>
             <input
@@ -35,11 +38,14 @@ const Signup = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Email
             </label>
             <input
-              type="email" 
+              type="email"
               id="email"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
               placeholder="Enter your email"
@@ -48,7 +54,10 @@ const Signup = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Password
             </label>
             <input
@@ -66,9 +75,9 @@ const Signup = () => {
           >
             Sign Up
           </button>
-        </form> 
+        </form>
         <p className="mt-4 text-gray-600">
-          Do have an account?{' '}
+          Do have an account?{" "}
           <Link to="/" className="text-blue-500 hover:underline">
             Login here
           </Link>
