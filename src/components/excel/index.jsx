@@ -2,26 +2,32 @@ import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 
 function FileUpload() {
+  const [choosenFile, setChoosenFile] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  
   const [fileData, setFileData] = useState(null);
+  // const [fileData, setFileData] = useState(null);
   const [editMode, setEditMode] = useState(false);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+    setChoosenFile(event.target.files[0])
+    console.log((event.target.files[0]))
+
+  }
 
   const handleFileUpload = () => {
-    if (selectedFile) {
-      const reader = new FileReader();
+    if (choosenFile) {
+      const reader = new FileReader()
       reader.onload = (e) => {
         const fileContent = e.target.result;
         const workbook = XLSX.read(fileContent, { type: 'binary' });
         const worksheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[worksheetName];
         const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        console.log(data);
         setFileData(data);
-      };
-      reader.readAsBinaryString(selectedFile);
+      }
+      reader.readAsBinaryString(choosenFile);
     }
   };
 
@@ -40,17 +46,43 @@ function FileUpload() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
     XLSX.writeFile(workbook, 'uploaded_file.xlsx');
-  };
+  }
 
   return (
     <div className="p-4 ">
-      <input type="file" className="mb-4" onChange={handleFileChange} />
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={handleFileUpload}
-      >
-        Upload
-      </button>
+      <div className='flex gap-10'>
+        {/* 1st upload */}
+        <div className='flex items-center'>
+          <input type="file" onChange={handleFileChange} />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={handleFileUpload}
+          >
+            Upload
+          </button>
+        </div>
+        {/* 2nd upload */}
+        <div className='flex items-center'>
+          <input type="file" onChange={handleFileChange} />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={handleFileUpload}
+          >
+            Upload
+          </button>
+        </div>
+        {/* create new buttton */}
+        <div className='flex items-center ml-10'>
+          <button
+            className="bg-blue-500 text-white px-4 py-2  rounded"
+            onClick={handleFileUpload}
+          >
+            Create New file
+          </button>
+        </div>
+
+      </div>
+
       {!fileData && (
         <div className="flex justify-center items-center h-80">
           <h1 className="text-4xl font-bold underline">Choose an excel file & click upload to view it</h1>
