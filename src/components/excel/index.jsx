@@ -43,7 +43,7 @@ function FileUpload() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       <input type="file" className="mb-4" onChange={handleFileChange} />
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -53,7 +53,7 @@ function FileUpload() {
       </button>
       {fileData && (
         <div>
-          <table className="border-collapse border border-gray-400 mt-4">
+          <table className="border-collapse border border-gray-400 mt-4 mx-auto">
             <thead>
               <tr>
                 {fileData[0].map((cellData, index) => (
@@ -62,7 +62,7 @@ function FileUpload() {
                   </th>
                 ))}
               </tr>
-            </thead>
+            </thead> 
             <tbody>
               {fileData.slice(1).map((rowData, rowIndex) => (
                 <tr key={rowIndex}>
