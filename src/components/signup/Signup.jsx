@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -38,7 +39,7 @@ const Signup = () => {
               Email
             </label>
             <input
-              type="email"
+              type="email" 
               id="email"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
               placeholder="Enter your email"
@@ -65,7 +66,14 @@ const Signup = () => {
           >
             Sign Up
           </button>
-        </form>
+        </form> 
+        <p className="mt-4 text-gray-600">
+          Do have an account?{' '}
+          <Link to="/" className="text-blue-500 hover:underline">
+            Login here
+          </Link>
+          .
+        </p>
       </div>
     </div>
   );
