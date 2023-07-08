@@ -27,7 +27,7 @@ function FileUpload() {
         const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         console.log(data);
         setSelectedFile(data);
-        if(params===1)  setFileData1(data);
+        if (params === 1) setFileData1(data);
         else setFileData2(data)
       }
       reader.readAsBinaryString(choosenFile);
@@ -43,9 +43,26 @@ function FileUpload() {
   const handleToggleEditMode = () => {
     setEditMode(!editMode);
   };
-  const handleCreate=()=>{
-    console.log("create");
-    
+
+  const handleCreate = () => {
+    if(!fileData1) return alert("insert file 1")
+    if(!fileData2) return alert("insert file 2")
+    let index = []
+    fileData1[0].forEach((data, i) => {
+      fileData2[0].forEach((data2, j) => {
+        if (data === data2) {
+          index.push(i)
+        }
+      })
+    })
+    console.log(index)
+
+    let arr3 = []
+    fileData1.forEach((data, i) => {
+      arr3.push(data.filter((sub, i) => index.includes(i)))
+    })
+    console.log(arr3)
+    setSelectedFile(arr3)
   }
 
   const handleDownload = () => {
@@ -57,15 +74,15 @@ function FileUpload() {
 
   return (
     <div className="p-4 ">
-      <div className='flex gap-10'>
+      <div className='flex justify-between'>
         {/* 1st upload */}
         <div className='flex items-center'>
           <input type="file" onChange={handleFileChange} />
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={()=>handleFileUpload(1)}
+            onClick={() => handleFileUpload(1)}
           >
-            Upload
+            Upload 1st file
           </button>
         </div>
         {/* 2nd upload */}
@@ -73,9 +90,9 @@ function FileUpload() {
           <input type="file" onChange={handleFileChange} />
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={()=>handleFileUpload(2)}
+            onClick={() => handleFileUpload(2)}
           >
-            Upload
+            Upload 2nd file
           </button>
         </div>
         {/* create new buttton */}
