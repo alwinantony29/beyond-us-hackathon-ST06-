@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 function FileUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileData, setFileData] = useState(null);
+  const [editMode, setEditMode] = useState(false);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -30,13 +31,20 @@ function FileUpload() {
     setFileData(updatedData);
   };
 
+  const handleToggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleDownload = () => {
+    const worksheet = XLSX.utils.aoa_to_sheet(fileData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, 'uploaded_file.xlsx');
+  };
+
   return (
     <div className="p-4">
-      <input
-        type="file"
-        className="mb-4"
-        onChange={handleFileChange}
-      />
+      <input type="file" className="mb-4" onChange={handleFileChange} />
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded"
         onClick={handleFileUpload}
@@ -44,41 +52,62 @@ function FileUpload() {
         Upload
       </button>
       {fileData && (
-        <table className="border-collapse border border-gray-400 mt-4">
-          <thead>
-            <tr>
-              {fileData[0].map((cellData, index) => (
-                <th
-                  key={index}
-                  className="border border-gray-400 px-4 py-2"
-                >
-                  {cellData}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {fileData.slice(1).map((rowData, rowIndex) => (
-              <tr key={rowIndex}>
-                {rowData.map((cellData, cellIndex) => (
-                  <td
-                    key={cellIndex}
-                    className="border border-gray-400 px-4 py-2"
-                  >
-                    <input
-                      type="text"
-                      className="w-full bg-gray-100 border border-gray-400 px-2 py-1 rounded"
-                      value={cellData}
-                      onChange={(e) =>
-                        handleCellChange(rowIndex + 1, cellIndex, e.target.value)
-                      }
-                    />
-                  </td>
+        <div>
+          <table className="border-collapse border border-gray-400 mt-4">
+            <thead>
+              <tr>
+                {fileData[0].map((cellData, index) => (
+                  <th key={index} className="border border-gray-400 px-4 py-2">
+                    {cellData}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {fileData.slice(1).map((rowData, rowIndex) => (
+                <tr key={rowIndex}>
+                  {rowData.map((cellData, cellIndex) => (
+                    <td
+                      key={cellIndex}
+                      className="border border-gray-400 px-4 py-2"
+                    >
+                      {editMode ? (
+                        <input
+                          type="text"
+                          className="w-full bg-gray-100 border border-gray-400 px-2 py-1 rounded"
+                          value={cellData}
+                          onChange={(e) =>
+                            handleCellChange(
+                              rowIndex + 1,
+                              cellIndex,
+                              e.target.value
+                            )
+                          }
+                        />
+                      ) : (
+                        cellData
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="mt-4">
+            <button
+              className={`bg-${editMode ? 'green' : 'blue'}-500 text-white px-4 py-2 rounded mr-2`}
+              onClick={handleToggleEditMode}
+            >
+              {editMode ? 'Save' : 'Edit'}
+            </button>
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded"
+              onClick={handleDownload}
+            >
+              Download File
+            </button>
+          </div>
+        </div> 
       )}
     </div>
   );
