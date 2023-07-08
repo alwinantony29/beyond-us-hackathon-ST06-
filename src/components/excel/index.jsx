@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 
-function Excel() {
+function FileUpload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileData, setFileData] = useState(null);
 
@@ -24,16 +24,36 @@ function Excel() {
     }
   };
 
+  const handleCellChange = (rowIndex, columnIndex, value) => {
+    const updatedData = [...fileData];
+    updatedData[rowIndex][columnIndex] = value;
+    setFileData(updatedData);
+  };
+
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleFileUpload}>Upload</button>
+    <div className="p-4">
+      <input
+        type="file"
+        className="mb-4"
+        onChange={handleFileChange}
+      />
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+        onClick={handleFileUpload}
+      >
+        Upload
+      </button>
       {fileData && (
-        <table>
+        <table className="border-collapse border border-gray-400 mt-4">
           <thead>
             <tr>
               {fileData[0].map((cellData, index) => (
-                <th key={index}>{cellData}</th>
+                <th
+                  key={index}
+                  className="border border-gray-400 px-4 py-2"
+                >
+                  {cellData}
+                </th>
               ))}
             </tr>
           </thead>
@@ -41,7 +61,19 @@ function Excel() {
             {fileData.slice(1).map((rowData, rowIndex) => (
               <tr key={rowIndex}>
                 {rowData.map((cellData, cellIndex) => (
-                  <td key={cellIndex}>{cellData}</td>
+                  <td
+                    key={cellIndex}
+                    className="border border-gray-400 px-4 py-2"
+                  >
+                    <input
+                      type="text"
+                      className="w-full bg-gray-100 border border-gray-400 px-2 py-1 rounded"
+                      value={cellData}
+                      onChange={(e) =>
+                        handleCellChange(rowIndex + 1, cellIndex, e.target.value)
+                      }
+                    />
+                  </td>
                 ))}
               </tr>
             ))}
@@ -52,4 +84,4 @@ function Excel() {
   );
 }
 
-export default Excel;
+export default FileUpload;
