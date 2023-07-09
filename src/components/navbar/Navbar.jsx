@@ -12,7 +12,7 @@ const Navbar = () => {
           <div>
             <Link
               to="/"
-              className="text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+              className="text-lg font-semibold text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
             >
               Upload Excel
             </Link>

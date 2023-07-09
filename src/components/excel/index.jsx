@@ -29,12 +29,11 @@ function FileUpload() {
         if (params === 1) setFileData1(data);
         else setFileData2(data)
       } catch (error) {
-        alert("sorry we seem to encounter some kind of error check console for further information")
+        alert("Sorry we seem to encounter some kind of error check console for further information")
         console.error("Error processing the file:", error);
       }
     }
     reader.readAsBinaryString(choosenFile);
-
   }
 
   const handleCellChange = (rowIndex, columnIndex, value) => {
@@ -78,7 +77,7 @@ function FileUpload() {
 
   return (
     <div className="p-4 ">
-      <div className='flex justify-between'>
+      <div className='flex justify-evenly'>
         {/* 1st upload */}
         <div className='flex items-center'>
           <input type="file" onChange={handleFileChange} />
@@ -114,7 +113,7 @@ function FileUpload() {
       {!selectedFile && (
         <div className="flex flex-col gap-10 justify-center items-center h-80">
           <h1 className="text-4xl font-bold underline">Choose an excel file & click upload to view it</h1>
-          <p className='text-lg font-normal'>Note that the 2nd file is the one with only the heading of the content needed from 1st file</p>
+          <p className='text-lg font-normal'>While creating new file Note that the 2nd file is the one with only the heading of the content needed from 1st file</p>
         </div>
       )}
 
