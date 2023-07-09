@@ -1,15 +1,15 @@
 
 # Examples and Demos
-[Live demo](https://beyond-us-hackathon-st-06.vercel.app/)
-[demo and test files](https://drive.google.com/drive/folders/19Hbtr6x7O3vIqBdiEByJF0owtLBOx4oM?usp=drive_link)
+- [Live demo](https://beyond-us-hackathon-st-06.vercel.app/)
+- [video demo and test files](https://drive.google.com/drive/folders/19Hbtr6x7O3vIqBdiEByJF0owtLBOx4oM?usp=drive_link)
 
 ![alt](https://res.cloudinary.com/ddh0reqyx/image/upload/v1688884805/Screenshot_62_vxzshd.png)
 
 # Installation and Setup
 
-- ** Clone the repository: **  git clone git@github.com:alwinantony29/beyond-us-hackathon-ST06-.git 
+-  Clone the repository:   git clone git@github.com:alwinantony29/beyond-us-hackathon-ST06-.git 
 
-- ** Install dependencies: npm install **
+-  Install dependencies: npm install 
 
 # Project Structure
 
