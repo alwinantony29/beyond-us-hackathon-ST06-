@@ -4,20 +4,16 @@ import Excel from './components/excel'
 import Navbar from './components/navbar/Navbar'
 import Login from './components/login/login'
 import Signup from './components/signup/Signup'
+import Footer from './components/footer'
 
 function App() {
 
   return (
-    <>
-    <Navbar/>
-      <Routes>
-        <Route path="/" element={<Excel />} />
-
-        {/* <Route path="/login" element={<Login />} /> */}
-        {/* <Route path="/signup" element={<Signup />} /> */}
-      
-      </Routes>
-    </>
+    <div className='flex flex-col'>
+      <Navbar />
+      <Excel />
+      <Footer />
+    </div>
   )
 }
 
