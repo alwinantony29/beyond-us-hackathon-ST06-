@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 function FileUpload() {
   // choosenFile is used when user inputs a file, for uploading purposes
   const [choosenFile, setChoosenFile] = useState(null);
-  // selectedFile is used to display the current file to user in tables,after uploading
+  // selectedFile is used to display the file to user in tables,after uploading
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileData1, setFileData1] = useState(null); //1st excel sheet
   const [fileData2, setFileData2] = useState(null); //2nd excel sheet
@@ -12,27 +12,30 @@ function FileUpload() {
 
   const handleFileChange = (event) => {
     setChoosenFile(event.target.files[0])
-    console.log((event.target.files[0]))
   }
 
   const handleFileUpload = (params) => {
-    console.log(params);
-    if (choosenFile) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
+    if (!choosenFile) return alert("choose a file to upload")
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      try {
         const fileContent = e.target.result;
         const workbook = XLSX.read(fileContent, { type: 'binary' });
         const worksheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[worksheetName];
         const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        console.log(data);
+        console.log("uploaded file: " + data);
         setSelectedFile(data);
         if (params === 1) setFileData1(data);
         else setFileData2(data)
+      } catch (error) {
+        alert("sorry we seem to encounter some kind of error check console for further information")
+        console.error("Error processing the file:", error);
       }
-      reader.readAsBinaryString(choosenFile);
     }
-  };
+    reader.readAsBinaryString(choosenFile);
+
+  }
 
   const handleCellChange = (rowIndex, columnIndex, value) => {
     const updatedData = [...selectedFile];
@@ -45,8 +48,8 @@ function FileUpload() {
   };
 
   const handleCreate = () => {
-    if(!fileData1) return alert("insert file 1")
-    if(!fileData2) return alert("insert file 2")
+    if (!fileData1) return alert("insert file 1")
+    if (!fileData2) return alert("insert file 2")
     let index = []
     fileData1[0].forEach((data, i) => {
       fileData2[0].forEach((data2, j) => {
@@ -61,11 +64,12 @@ function FileUpload() {
     fileData1.forEach((data, i) => {
       arr3.push(data.filter((sub, i) => index.includes(i)))
     })
-    console.log(arr3)
+    console.log("new array: " + arr3)
     setSelectedFile(arr3)
   }
 
   const handleDownload = () => {
+    if (!selectedFile) return alert("select a file to download")
     const worksheet = XLSX.utils.aoa_to_sheet(selectedFile);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
@@ -108,8 +112,9 @@ function FileUpload() {
       </div>
 
       {!selectedFile && (
-        <div className="flex justify-center items-center h-80">
+        <div className="flex flex-col gap-10 justify-center items-center h-80">
           <h1 className="text-4xl font-bold underline">Choose an excel file & click upload to view it</h1>
+          <p className='text-lg font-normal'>Note that the 2nd file is the one with only the heading of the content needed from 1st file</p>
         </div>
       )}
 
