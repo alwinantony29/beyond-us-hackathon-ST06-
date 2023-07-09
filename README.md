@@ -39,3 +39,4 @@ You may also see any lint errors in the console.
 - "react-dom": "^18.2.0",
 - "react-router-dom": "^6.14.1",
 - "xlsx": "^0.18.5"
+- "tailwind"
